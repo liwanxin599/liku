@@ -1,15 +1,15 @@
 var layer = layui.layer
 var form = layui.form
 var laypage = layui.laypage
-// 初始化获取文章列表
-// 初始化参数对象--用来查询的
+
+
 var q = {
     pagenum: 1,
     pagesize: 2,
     cate_id: '',
     state: ''
 }
-// 封装函数时间格式
+
 template.defaults.imports.dataFormat = function (date) {
     var dt = new Date(date)
     var y = addZero(dt.getFullYear())
@@ -31,7 +31,7 @@ function initTable() {
         url: '/my/article/list',
         data: q,
         success: function (res) {
-            // console.log(res);
+
             if (res.status !== 0) {
                 return layer.msg('获取列表数据失败')
             }
@@ -50,7 +50,6 @@ function initCate() {
         method: 'get',
         url: '/my/article/cates',
         success: function (res) {
-            // console.log(res);
             if (res.status !== 0) {
                 return layer.msg('获取列表失败')
             }
@@ -62,7 +61,7 @@ function initCate() {
     })
 }
 initCate()
-// 实现筛选的功能
+// 筛选
 $('#form-search').on('submit', function (e) {
     e.preventDefault()
     var cate_id = $('[name=cate_id]').val()
@@ -74,22 +73,22 @@ $('#form-search').on('submit', function (e) {
 })
 // 封装分页函数
 function renderPage(total) {
-    // 分页的方式：根据数据条数/每页显示的数量
+
     // console.log(total);
     laypage.render({
-        // 设置分页区域其他功能
+
         layout: ['count', 'limit', 'prev', 'page', 'next', 'skip'],
-        // 设置每页显示多少天数据功能
+
         limits: [2, 3, 5, 10],
-        // 指向容器
+
         elem: 'page',
-        // 数据总条数
+
         count: total,
-        // 每页显示的数据
+
         limit: q.pagesize,
-        // 默认选中的页码
+
         curr: q.pagenum,
-        //--------------------切换页码
+
         // 步骤：1、得到点击的哪一页 2、重新渲染表格
         // jump会生效的情况：1、点击触发jump
         //                  2、调用render函数渲染页面的时候
@@ -98,7 +97,6 @@ function renderPage(total) {
             q.pagenum = obj.curr
             q.pagesize = obj.limit
             // 调用函数渲染表格
-            // console.log(first);
             if (!first) {
                 initTable()
             }
